@@ -1,0 +1,57 @@
+# Interval (in seconds) for applying buff and debuff effects
+buff-interval: 60
+
+# Enable or disable debuff effects for nearby entities (true/false)
+enable-debuffs: true
+
+# Radius (in blocks) for applying debuff effects to nearby entities
+debuff-radius: 20
+
+# Enable or disable particle effects (true/false)
+enable-particles: true
+# Delay (in seconds) between each radar wave particle effect
+particle-delay: 5
+
+# Particle effect to use for the wave (e.g., WATER_WAKE, BUBBLE, SPLASH)
+particle-effect: WITCH
+
+# Speed (in seconds) for particle circle to expand to debuff-radius
+particle-speed: 2.0
+
+# Enable or disable sound effects (true/false)
+enable-sound: true
+
+# Sound effect to play when wave starts (e.g., BLOCK_AMETHYST_BLOCK_CHIME, ENTITY_EXPERIENCE_ORB_PICKUP)
+sound-name: BLOCK_AMETHYST_BLOCK_CHIME
+
+# List of buff effects applied to players holding a dragon egg
+# Format: EFFECT:LEVEL:DURATION (LEVEL is the effect level, DURATION is the time in seconds)
+buff-effects:
+  - NIGHT_VISION:1:60
+  - REGENERATION:1:2
+
+# List of debuff effects applied to entities within the radius
+# Format: EFFECT:LEVEL:DURATION (LEVEL is the effect level, DURATION is the time in seconds)
+debuff-effects:
+  - HUNGER:1:10
+  - DARKNESS:1:5
+  - SLOWNESS:1:5
+  - WEAKNESS:1:30
+
+# List of entity types affected by debuff effects
+# Use EntityType names (e.g., ZOMBIE, SKELETON) or PLAYER for players
+affected-entities:
+  - PLAYER
+  - ZOMBIE
+  - SKELETON
+  - CREEPER
+  - SPIDER
+  - CAVE_SPIDER
+  - DROWNED
+  - HUSK
+  - STRAY
+  - WITCH
+  - PHANTOM
+  - ZOMBIE_VILLAGER
+  - SILVERFISH
+  - ENDERMITE
