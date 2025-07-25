@@ -1,6 +1,7 @@
 package com.NguyenDevs.superDragonEgg.Command;
 
 import com.NguyenDevs.superDragonEgg.SuperDragonEgg;
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -24,17 +25,23 @@ public class ReloadCommand implements CommandExecutor, TabCompleter {
         }
 
         if (args.length == 0 || !args[0].equalsIgnoreCase("reload")) {
-            sender.sendMessage("§cUsage: /sde reload");
+            String message = plugin.getConfigManager().getMessages().getString("messages.usage");
+            String prefix = plugin.getConfigManager().getMessages().getString("messages.prefix");
+            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', prefix + " " + message));
             return true;
         }
 
-        if (!sender.hasPermission("superdragonegg.reload")) {
-            sender.sendMessage("§cYou do not have permission to use this command.");
+        if (!sender.hasPermission("sde.reload")) {
+            String message = plugin.getConfigManager().getMessages().getString("messages.no-permission");
+            String prefix = plugin.getConfigManager().getMessages().getString("messages.prefix");
+            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', prefix + " " + message));
             return true;
         }
 
         plugin.reloadPlugin();
-        sender.sendMessage("§aSuperDragonEgg config reloaded successfully!");
+        String message = plugin.getConfigManager().getMessages().getString("messages.reloaded");
+        String prefix = plugin.getConfigManager().getMessages().getString("messages.prefix");
+        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', prefix + " " + message));
         return true;
     }
 

@@ -2,12 +2,15 @@ name: SuperDragonEgg
 version: '1.0.0'
 main: com.NguyenDevs.superDragonEgg.SuperDragonEgg
 api-version: '1.20'
-description: Grants buffs to players holding dragon egg, debuffs to nearby entities, and radar wave particle effects
+description: Grants buffs to players holding dragon egg, debuffs to nearby entities
 commands:
   sde:
     description: SuperDragonEgg plugin commands
     usage: /<command> reload
 permissions:
-  superdragonegg.reload:
+  sde.reload:
     description: Allows reloading the SuperDragonEgg config
     default: op
+  sde.use:
+    description: Allows using the SuperDragonEgg features
+    default: true

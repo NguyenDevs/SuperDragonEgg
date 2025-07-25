@@ -1,0 +1,5 @@
+messages:
+  prefix: "&d[&5SuperDragonEgg&d]"
+  usage: "&bUsage: /sde reload"
+  no-permission: "&4You do not have permission!"
+  reloaded: "&2Reloaded successfully!"
