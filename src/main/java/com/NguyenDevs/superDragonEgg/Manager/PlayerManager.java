@@ -6,6 +6,7 @@ import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scoreboard.Scoreboard;
@@ -53,7 +54,18 @@ public class PlayerManager {
     }
 
     public boolean hasDragonEgg(Player player) {
-        return player.getInventory().contains(Material.DRAGON_EGG) && player.hasPermission("sde.use");
+        if (!player.hasPermission("sde.use")) {
+            return false;
+        }
+
+        // Chỉ kiểm tra trong hotbar (slot 0-8)
+        for (int i = 0; i <= 8; i++) {
+            ItemStack item = player.getInventory().getItem(i);
+            if (item != null && item.getType() == Material.DRAGON_EGG) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public boolean isPlayerWithDragonEgg(Entity entity) {
@@ -110,6 +122,10 @@ public class PlayerManager {
         }
 
         team.addEntry(player.getName());
+
+        // Đặt player vào team để có glowing effect
+        player.setScoreboard(scoreboard);
+        player.setGlowing(true);
     }
 
     public void removeFromGlowTeam(Entity entity) {
@@ -123,6 +139,9 @@ public class PlayerManager {
                 team.removeEntry(player.getName());
             }
         }
+
+        // Tắt glowing effect
+        player.setGlowing(false);
     }
 
     public void startGlowEffect(Entity entity, DyeColor glowColor, int duration) {

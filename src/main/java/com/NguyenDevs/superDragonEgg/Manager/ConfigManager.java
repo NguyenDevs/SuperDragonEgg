@@ -49,6 +49,8 @@ public class ConfigManager {
     private boolean resonanceEnabled;
     private int resonanceRadius;
     private double resonanceCoefficient;
+    private double knockbackStrength;
+    private double knockbackVertical;
 
     public ConfigManager(JavaPlugin plugin) {
         this.plugin = plugin;
@@ -113,6 +115,8 @@ public class ConfigManager {
             }
             particleSpeed = config.getDouble("particle.speed", 1.0);
             particleDelay = config.getInt("particle.delay", 5);
+            knockbackStrength = config.getDouble("particle.knockback-strength", 0.3);
+            knockbackVertical = config.getDouble("particle.knockback-vertical", 0.1);
 
             debuffParticleEnabled = config.getBoolean("debuff-particle.enable", true);
             String debuffParticleName = config.getString("debuff-particle.type", "REDSTONE").toUpperCase();
@@ -235,6 +239,14 @@ public class ConfigManager {
         return particleDelay;
     }
 
+    public double getKnockbackStrength() {
+        return knockbackStrength;
+    }
+
+    public double getKnockbackVertical() {
+        return knockbackVertical;
+    }
+
     public boolean isParticlesEnabled() {
         return enableParticles;
     }
@@ -329,5 +341,84 @@ public class ConfigManager {
 
     public double getResonanceCoefficient() {
         return resonanceCoefficient;
+    }
+
+    // Ability configuration methods
+    public boolean isAbilityEnabled() {
+        FileConfiguration config = plugin.getConfig();
+        boolean enabled = config.getBoolean("ability.enable", true);
+        if (!config.contains("ability.enable")) {
+            Bukkit.getConsoleSender().sendMessage("§d[§5SuperDragonEgg§d] §cMissing ability.enable in config, using default: §btrue");
+        }
+        return enabled;
+    }
+
+    public double getAbilityShieldRadius() {
+        FileConfiguration config = plugin.getConfig();
+        double radius = config.getDouble("ability.shield-radius", 3.0);
+        if (!config.contains("ability.shield-radius") || radius <= 0) {
+            Bukkit.getConsoleSender().sendMessage("§d[§5SuperDragonEgg§d] §cInvalid or missing ability.shield-radius in config, using default: §b3.0");
+            radius = 3.0;
+        }
+        return radius;
+    }
+
+    public double getAbilityMinRadius() {
+        FileConfiguration config = plugin.getConfig();
+        double minRadius = config.getDouble("ability.min-radius", 3.0);
+        if (!config.contains("ability.min-radius") || minRadius < 0) {
+            Bukkit.getConsoleSender().sendMessage("§d[§5SuperDragonEgg§d] §cInvalid or missing ability.min-radius in config, using default: §b3.0");
+            minRadius = 3.0;
+        }
+        return minRadius;
+    }
+
+    public double getAbilityMaxRadius() {
+        FileConfiguration config = plugin.getConfig();
+        double maxRadius = config.getDouble("ability.max-radius", 5.0);
+        if (!config.contains("ability.max-radius") || maxRadius <= getAbilityMinRadius()) {
+            Bukkit.getConsoleSender().sendMessage("§d[§5SuperDragonEgg§d] §cInvalid or missing ability.max-radius in config, using default: §b5.0");
+            maxRadius = 5.0;
+        }
+        return maxRadius;
+    }
+
+    public double getAbilityDuration() {
+        FileConfiguration config = plugin.getConfig();
+        double duration = config.getDouble("ability.duration", 5.0);
+        if (!config.contains("ability.duration") || duration <= 0) {
+            Bukkit.getConsoleSender().sendMessage("§d[§5SuperDragonEgg§d] §cInvalid or missing ability.duration in config, using default: §b5.0");
+            duration = 5.0;
+        }
+        return duration;
+    }
+
+    public double getAbilityCooldown() {
+        FileConfiguration config = plugin.getConfig();
+        double cooldown = config.getDouble("ability.cooldown", 10.0);
+        if (!config.contains("ability.cooldown") || cooldown < 0) {
+            Bukkit.getConsoleSender().sendMessage("§d[§5SuperDragonEgg§d] §cInvalid or missing ability.cooldown in config, using default: §b10.0");
+            cooldown = 10.0;
+        }
+        return cooldown;
+    }
+
+    public Sound getAbilitySound() {
+        String soundName = plugin.getConfig().getString("ability.sound-name", "ENTITY_ENDER_DRAGON_FLAP").toUpperCase();
+        try {
+            return Sound.valueOf(soundName);
+        } catch (IllegalArgumentException e) {
+            Bukkit.getConsoleSender().sendMessage("§d[§5SuperDragonEgg§d] §cInvalid ability sound name: §f" + soundName + "§c. Using default: §dENTITY_ENDER_DRAGON_FLAP");
+            return Sound.ENTITY_ENDER_DRAGON_FLAP;
+        }
+    }
+    public double getAbilityStrength() {
+        FileConfiguration config = plugin.getConfig();
+        double strength = config.getDouble("ability.strength", 0.3);
+        if (!config.contains("ability.strength") || strength < 0) {
+            Bukkit.getConsoleSender().sendMessage("§d[§5SuperDragonEgg§d] §cInvalid or missing ability.strength in config, using default: §b0.3");
+            strength = 0.3;
+        }
+        return strength;
     }
 }

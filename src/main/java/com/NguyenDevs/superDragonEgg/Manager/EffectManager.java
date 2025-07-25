@@ -44,17 +44,12 @@ public class EffectManager {
                 playerManager.updatePlayersWithDragonEgg();
 
                 for (Player player : playerManager.getPlayersWithDragonEgg()) {
-                    // Check if player has permission and is in an enabled world
                     if (!player.hasPermission("sde.use") || !configManager.getEnableWorlds().contains(player.getWorld().getName())) {
                         continue;
                     }
-
-                    // Apply buffs to player
                     for (String effect : configManager.getBuffEffects()) {
                         applyEffect(player, effect, 1.0);
                     }
-
-                    // Apply resonance effects to nearby players with dragon eggs
                     if (configManager.isResonanceEnabled()) {
                         Location center = player.getLocation();
                         for (Player nearbyPlayer : player.getWorld().getPlayers()) {
@@ -66,7 +61,6 @@ public class EffectManager {
                         }
                     }
 
-                    // Apply debuffs to nearby entities
                     if (configManager.isDebuffsEnabled()) {
                         Location center = player.getLocation();
                         for (Entity entity : player.getWorld().getEntities()) {
@@ -78,7 +72,6 @@ public class EffectManager {
                         }
                     }
 
-                    // Apply buffs to allied mobs
                     if (configManager.isAlliesEnabled()) {
                         Location center = player.getLocation();
                         for (Entity entity : player.getWorld().getEntities()) {
@@ -145,19 +138,14 @@ public class EffectManager {
                 Bukkit.getConsoleSender().sendMessage("§d[§5SuperDragonEgg§d] §cInvalid potion effect: §f" + parts[0]);
                 return;
             }
-
-            int baseLevel = Integer.parseInt(parts[1]) - 1; // Base level (0-based for PotionEffect)
-            int duration = Integer.parseInt(parts[2]) * 20; // Duration in ticks
+            int baseLevel = Integer.parseInt(parts[1]) - 1;
+            int duration = Integer.parseInt(parts[2]) * 20;
             int level = baseLevel;
-
-            // Apply multiplier to level for resonance, otherwise to duration for allies
             if (multiplier != 1.0) {
                 if (entity instanceof Player && playerManager.isPlayerWithDragonEgg(entity)) {
-                    // For resonance: multiply the effect level
                     level = baseLevel + (int) multiplier;
-                    if (level < 0) level = 0; // Ensure level is non-negative
+                    if (level < 0) level = 0;
                 } else {
-                    // For allies: multiply the duration
                     duration = (int) (duration * multiplier);
                 }
             }
@@ -171,13 +159,32 @@ public class EffectManager {
                 }
             }
 
+            boolean isBuffEffect = (entity instanceof Player && playerManager.isPlayerWithDragonEgg(entity))
+                    || configManager.getAllyEntities().contains(entity.getType());
+
             if (entity instanceof Player) {
-                ((Player) entity).addPotionEffect(new PotionEffect(type, duration, level, false, false));
+                PotionEffect potionEffect = new PotionEffect(
+                        type,
+                        duration,
+                        level,
+                        isBuffEffect,
+                        false
+                );
+                ((Player) entity).addPotionEffect(potionEffect);
+
                 if (type == PotionEffectType.GLOWING && glowColor != null) {
                     playerManager.startGlowEffect(entity, glowColor, duration);
                 }
             } else if (entity instanceof LivingEntity) {
-                ((LivingEntity) entity).addPotionEffect(new PotionEffect(type, duration, level, false, false));
+                PotionEffect potionEffect = new PotionEffect(
+                        type,
+                        duration,
+                        level,
+                        isBuffEffect,
+                        false
+                );
+                ((LivingEntity) entity).addPotionEffect(potionEffect);
+
                 if (configManager.isDebuffParticleEnabled() && !playerManager.isPlayerWithDragonEgg(entity) && !configManager.getAllyEntities().contains(entity.getType())) {
                     startDebuffParticleTask(entity);
                 }
@@ -186,7 +193,7 @@ public class EffectManager {
                 }
             }
         } catch (NumberFormatException e) {
-            Bukkit.getConsoleSender().sendMessage("§d effect: §f" + effectString);
+            Bukkit.getConsoleSender().sendMessage("§d[§5SuperDragonEgg§d] §deffect: §f" + effectString);
         }
     }
 

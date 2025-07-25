@@ -3,3 +3,4 @@ messages:
   usage: "&bUsage: /sde reload"
   no-permission: "&4You do not have permission!"
   reloaded: "&2Reloaded successfully!"
+  ability-on-cooldown: "§d[§5SuperDragonEgg§d] §cAbility is on cooldown!"

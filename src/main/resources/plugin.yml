@@ -1,5 +1,5 @@
 name: SuperDragonEgg
-version: '1.0.0'
+version: '1.0.1'
 main: com.NguyenDevs.superDragonEgg.SuperDragonEgg
 api-version: '1.20'
 description: Grants buffs to players holding dragon egg, debuffs to nearby entities

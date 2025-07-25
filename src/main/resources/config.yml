@@ -8,8 +8,8 @@ enable-worlds:
 
 # Configuration for dragon egg respawn mechanics when an Ender Dragon is killed.
 respawn-egg:
-  enable: true         # Enable or disable dragon egg respawn (true/false).
-  chance: 40           # Percentage chance (0-100%) for a dragon egg to respawn after the second and subsequent Ender Dragon kills in a world.
+  enable: true             # Enable or disable dragon egg respawn (true/false).
+  chance: 40               # Percentage chance (0-100%) for a dragon egg to respawn after the second and subsequent Ender Dragon kills in a world.
 
 # Interval (in seconds) for applying buff and debuff effects to players and entities.
 # Determines how often the plugin checks and applies effects (e.g., every 5 seconds).
@@ -17,63 +17,65 @@ buff-interval: 5
 
 # Configuration for applying buff effects to allied mobs (e.g., passive mobs like cows, sheep).
 allies:
-  enable: true         # Enable or disable buff effects for allied mobs (true/false).
-  delay: 10            # Delay (in seconds) before allied mobs can receive buff effects again after the previous application.
-  coefficient: 50      # Percentage (0-100%) of the buff duration applied to allied mobs compared to players (e.g., 50% means allies receive buffs for half the duration of players).
-  list:                # List of entity types considered as allies, which will receive buff effects.
+  enable: true             # Enable or disable buff effects for allied mobs (true/false).
+  delay: 10                # Delay (in seconds) before allied mobs can receive buff effects again after the previous application.
+  coefficient: 50          # Percentage (0-100%) of the buff duration applied to allied mobs compared to players (e.g., 50% means allies receive buffs for half the duration of players).
+  list:                    # List of entity types considered as allies, which will receive buff effects.
     - VILLAGER
     - IRON_GOLEM
 
 # Configuration for resonance effects, which amplify buff effect levels for nearby players holding dragon eggs.
 resonance:
-  enable: true         # Enable or disable resonance effects for nearby players holding dragon eggs (true/false).
-  radius: 5            # Radius (in blocks) around a player with a dragon egg where resonance effects are applied to other players with dragon eggs.
-  coefficient: 2       # Addition for the buff effect level applied to nearby players via resonance (e.g., 2 means the effect level is +2, so NIGHT_VISION:1:10 becomes NIGHT_VISION:3:10).
+  enable: true             # Enable or disable resonance effects for nearby players holding dragon eggs (true/false).
+  radius: 5                # Radius (in blocks) around a player with a dragon egg where resonance effects are applied to other players with dragon eggs.
+  coefficient: 2           # Addition for the buff effect level applied to nearby players via resonance (e.g., 2 means the effect level is +2, so NIGHT_VISION:1:10 becomes NIGHT_VISION:3:10).
 
 # Configuration for debuff effects applied to hostile entities or players within a radius.
 debuff:
-  enable: true         # Enable or disable debuff effects for nearby entities (true/false).
-  radius: 16           # Radius (in blocks) around a player with a dragon egg where debuff effects are applied to entities.
+  enable: true             # Enable or disable debuff effects for nearby entities (true/false).
+  radius: 16               # Radius (in blocks) around a player with a dragon egg where debuff effects are applied to entities.
 
 # Configuration for particle effects displayed around players holding a dragon egg.
 particle:
-  enable: true         # Enable or disable particle effects (true/false).
-  type: LINEAR         # Type of particle pattern to display. Supported types: LINEAR, SPHERE, SPIRAL.
-  speed: 1.0           # Speed (in seconds) for the particle wave to expand from the player to the debuff radius.
-  delay: 5             # Delay (in seconds) between each particle wave effect cycle.
-  effect: WITCH        # Particle effect type for the wave (e.g., WITCH, WATER_WAKE, BUBBLE, SPLASH). Must match valid Particle enum values in Bukkit.
+  enable: true             # Enable or disable particle effects (true/false).
+  type: LINEAR             # Type of particle pattern to display. Supported types: LINEAR, SPHERE, SPIRAL.
+  speed: 1.0               # Speed (in seconds) for the particle wave to expand from the player to the debuff radius.
+  delay: 5                 # Delay (in seconds) between each particle wave effect cycle.
+  effect: WITCH            # Particle effect type for the wave (e.g., WITCH, WATER_WAKE, BUBBLE, SPLASH). Must match valid Particle enum values in Bukkit.
+  knockback-strength: 0.3  # Strength of knockback applied to entities hit by particles. Set 0.0 to disable.
+  knockback-vertical: 0.1  # Vertical component of knockback to prevent sticking to ground. Set 0.0 to disable.
 
 # Configuration for particle effects applied to entities affected by debuffs.
 debuff-particle:
-  enable: true         # Enable or disable particle effects on entities receiving debuff effects (true/false).
-  type: REDSTONE       # Type of particle for debuff effects (e.g., REDSTONE, SPELL_WITCH). Must match valid Particle enum values in Bukkit.
-  duration: 5.0        # Duration (in seconds) of the debuff particle effect on affected entities.
-  color: PURPLE        # Color of the debuff particle (e.g., RED, BLUE, PURPLE). Applies only to REDSTONE particles, must match valid DyeColor enum values.
+  enable: true             # Enable or disable particle effects on entities receiving debuff effects (true/false).
+  type: REDSTONE           # Type of particle for debuff effects (e.g., REDSTONE, SPELL_WITCH). Must match valid Particle enum values in Bukkit.
+  duration: 5.0            # Duration (in seconds) of the debuff particle effect on affected entities.
+  color: PURPLE            # Color of the debuff particle (e.g., RED, BLUE, PURPLE). Applies only to REDSTONE particles, must match valid DyeColor enum values.
 
 # Configuration for sound effects played when particle waves are generated.
 sound:
-  enable: true         # Enable or disable sound effects (true/false).
+  enable: true             # Enable or disable sound effects (true/false).
   name: BLOCK_AMETHYST_BLOCK_RESONATE # Sound effect to play when a particle wave starts (e.g., BLOCK_AMETHYST_BLOCK_CHIME, ENTITY_EXPERIENCE_ORB_PICKUP). Must match valid Sound enum values in Bukkit.
-  volume: 1.0          # Volume of the sound effect (0.0 to 1.0, where 1.0 is full volume).
-  pitch: 1.0           # Pitch of the sound effect (0.5 to 2.0, where 1.0 is normal pitch).
+  volume: 1.0              # Volume of the sound effect (0.0 to 1.0, where 1.0 is full volume).
+  pitch: 1.0               # Pitch of the sound effect (0.5 to 2.0, where 1.0 is normal pitch).
 
 # List of buff effects applied to players holding a dragon egg.
 # Format: EFFECT:LEVEL:DURATION[:COLOR] (LEVEL is the effect level starting from 1, DURATION is the time in seconds).
 # For GLOWING effect, an optional COLOR can be specified (e.g., GLOWING:1:1:PURPLE), but color only applies to players (mobs glow white).
 buff-effects:
-  - RESISTANCE:1:5     # Apply Resistance level 5 for 30 seconds.
-  - NIGHT_VISION:1:5   # Apply Night Vision level 5 for 30 seconds.
-  - REGENERATION:1:5   # Apply Regeneration level 1 for 30 seconds.
+  - RESISTANCE:1:5
+  - NIGHT_VISION:1:5
+  - REGENERATION:1:5
 
 # List of debuff effects applied to entities within the debuff radius.
 # Format: EFFECT:LEVEL:DURATION (LEVEL is the effect level starting from 1, DURATION is the time in seconds).
 debuff-effects:
-  - HUNGER:1:10        # Apply Hunger level 1 for 10 seconds.
-  - DARKNESS:1:5       # Apply Darkness level 1 for 5 seconds.
-  - SLOWNESS:1:5       # Apply Slowness level 1 for 5 seconds.
-  - GLOWING:1:5        # Apply Glowing level 1 for 5 seconds.
-  - WITHER:1:5         # Apply Wither level 1 for 5 seconds.
-  - WEAKNESS:1:30      # Apply Weakness level 1 for 30 seconds.
+  - HUNGER:1:10
+  - DARKNESS:1:5
+  - SLOWNESS:1:5
+  - GLOWING:1:5
+  - WITHER:1:5
+  - WEAKNESS:1:30
 
 # List of entity types affected by debuff effects.
 # Use EntityType names from Bukkit (e.g., ZOMBIE, SKELETON) or PLAYER for players.
@@ -93,3 +95,14 @@ affected-entities:
   - ZOMBIE_VILLAGER
   - SILVERFISH
   - ENDERMITE
+
+# Configuration for the Dragon Shield Ability, activated by sneaking while holding a dragon egg.
+ability:
+  enable: true              # Enable or disable the Dragon Shield Ability (true/false).
+  sound-name: ENTITY_ENDER_DRAGON_FLAP
+  shield-radius: 3          # Radius (in blocks) of the spherical particle effect around the player.
+  min-radius: 3             # Minimum distance (in blocks) from the player where other players are affected by knockback.
+  max-radius: 5             # Maximum distance (in blocks) from the player where knockback is applied (strength decreases from min-radius to max-radius).
+  duration: 5               # Duration (in seconds) of the ability effect after activation.
+  cooldown: 10              # Cooldown (in seconds) before the ability can be used again.
+  strength: 8             # Knockback strength at min-radius (decreases linearly to 0 at max-radius).

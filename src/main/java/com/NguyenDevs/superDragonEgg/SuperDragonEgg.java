@@ -1,12 +1,13 @@
 package com.NguyenDevs.superDragonEgg;
 
+import com.NguyenDevs.superDragonEgg.Abilities.DragonShieldAbility;
 import com.NguyenDevs.superDragonEgg.Command.ReloadCommand;
 import com.NguyenDevs.superDragonEgg.Listener.PlayerListener;
 import com.NguyenDevs.superDragonEgg.Manager.ConfigManager;
 import com.NguyenDevs.superDragonEgg.Manager.DragonEggRespawnManager;
 import com.NguyenDevs.superDragonEgg.Manager.EffectManager;
-import com.NguyenDevs.superDragonEgg.Manager.ParticleManager;
 import com.NguyenDevs.superDragonEgg.Manager.PlayerManager;
+import com.NguyenDevs.superDragonEgg.Manager.ParticleManager;
 import com.NguyenDevs.superDragonEgg.Utils.LogoUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -20,6 +21,7 @@ public class SuperDragonEgg extends JavaPlugin {
     private EffectManager effectManager;
     private ParticleManager particleManager;
     private DragonEggRespawnManager dragonEggRespawnManager;
+    private DragonShieldAbility dragonShieldAbility;
 
     @Override
     public void onEnable() {
@@ -30,6 +32,7 @@ public class SuperDragonEgg extends JavaPlugin {
         effectManager = new EffectManager(this, configManager, playerManager);
         particleManager = new ParticleManager(this, configManager, playerManager);
         dragonEggRespawnManager = new DragonEggRespawnManager(this, configManager);
+        dragonShieldAbility = new DragonShieldAbility(this, configManager, playerManager);
 
         configManager.initialize();
 
@@ -58,6 +61,9 @@ public class SuperDragonEgg extends JavaPlugin {
         if (dragonEggRespawnManager != null) {
             dragonEggRespawnManager.cleanup();
         }
+        if (dragonShieldAbility != null) {
+            dragonShieldAbility.cleanup();
+        }
         Bukkit.getConsoleSender().sendMessage(configManager.getMessages().getString("plugin-disabled", "§d[§5SuperDragonEgg§d] §cPlugin disabled!"));
     }
 
@@ -70,6 +76,9 @@ public class SuperDragonEgg extends JavaPlugin {
         }
         if (dragonEggRespawnManager != null) {
             dragonEggRespawnManager.cleanup();
+        }
+        if (dragonShieldAbility != null) {
+            dragonShieldAbility.cleanup();
         }
 
         configManager.reloadConfig();

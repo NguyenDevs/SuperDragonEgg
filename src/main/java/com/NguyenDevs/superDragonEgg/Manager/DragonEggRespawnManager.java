@@ -41,20 +41,16 @@ public class DragonEggRespawnManager implements Listener {
             return;
         }
 
-        // Increment dragon kill count for the world
         String worldName = world.getName();
         int killCount = dragonKillCounts.getOrDefault(worldName, 0) + 1;
         dragonKillCounts.put(worldName, killCount);
 
-        // Only spawn egg from the second kill onwards
         if (killCount < 2) {
             return;
         }
 
-        // Check if egg should spawn based on chance
         int chance = configManager.getRespawnEggChance();
         if (random.nextInt(100) < chance) {
-            // Find the End Portal location (usually at 0, 0 in the End world)
             Location portalLocation = new Location(world, 0, world.getHighestBlockYAt(0, 0) + 1, 0);
             portalLocation.getBlock().setType(Material.DRAGON_EGG);
             Bukkit.getConsoleSender().sendMessage(configManager.getMessages().getString("dragon-egg-spawned", "§d[§5SuperDragonEgg§d] §aDragon egg spawned at " + portalLocation.toString()));
@@ -64,7 +60,6 @@ public class DragonEggRespawnManager implements Listener {
     }
 
     public void cleanup() {
-        // No tasks to cancel, but clear kill counts to reset state
         dragonKillCounts.clear();
     }
 }
