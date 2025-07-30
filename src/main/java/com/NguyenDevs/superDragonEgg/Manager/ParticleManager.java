@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
+import org.bukkit.GameMode;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -234,6 +235,16 @@ public class ParticleManager {
             if (entity instanceof LivingEntity && !(entity instanceof Player && playerManager.isPlayerWithDragonEgg((Player) entity)) &&
                     configManager.getAffectedEntities().contains(entity.getType()) &&
                     !configManager.getAllyEntities().contains(entity.getType())) {
+                // Kiểm tra nếu entity là người chơi và có các điều kiện đặc biệt
+                if (entity instanceof Player) {
+                    Player targetPlayer = (Player) entity;
+                    if (targetPlayer.isOp() ||
+                            targetPlayer.getGameMode() == GameMode.CREATIVE ||
+                            targetPlayer.getGameMode() == GameMode.SPECTATOR ||
+                            targetPlayer.hasPermission("sde.bypass")) {
+                        continue; // Bỏ qua người chơi đặc biệt
+                    }
+                }
                 Vector direction = particleLoc.toVector().subtract(center.toVector());
                 if (direction.lengthSquared() == 0) {
                     Bukkit.getConsoleSender().sendMessage("§d[§5SuperDragonEgg§d] §cZero vector detected in applyKnockback at particleLoc: " + particleLoc);

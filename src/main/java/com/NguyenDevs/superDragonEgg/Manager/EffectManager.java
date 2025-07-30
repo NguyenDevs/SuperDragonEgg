@@ -13,6 +13,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.GameMode;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -57,6 +58,28 @@ public class EffectManager {
                                 for (String effect : configManager.getBuffEffects()) {
                                     applyEffect(nearbyPlayer, effect, configManager.getResonanceCoefficient());
                                 }
+                                // Apply resonance coefficient to debuffs for enemies
+                                if (configManager.isDebuffsEnabled()) {
+                                    for (Entity entity : player.getWorld().getEntities()) {
+                                        if (entity != player &&
+                                                entity.getLocation().distance(center) <= configManager.getDebuffRadius() &&
+                                                configManager.getAffectedEntities().contains(entity.getType()) &&
+                                                !playerManager.isPlayerWithDragonEgg(entity)) {
+                                            if (entity instanceof Player) {
+                                                Player targetPlayer = (Player) entity;
+                                                if (targetPlayer.isOp() ||
+                                                        targetPlayer.getGameMode() == GameMode.CREATIVE ||
+                                                        targetPlayer.getGameMode() == GameMode.SPECTATOR ||
+                                                        targetPlayer.hasPermission("sde.bypass")) {
+                                                    continue;
+                                                }
+                                            }
+                                            for (String effect : configManager.getDebuffEffects()) {
+                                                applyEffect(entity, effect, configManager.getResonanceCoefficient());
+                                            }
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
@@ -64,7 +87,19 @@ public class EffectManager {
                     if (configManager.isDebuffsEnabled()) {
                         Location center = player.getLocation();
                         for (Entity entity : player.getWorld().getEntities()) {
-                            if (entity != player && entity.getLocation().distance(center) <= configManager.getDebuffRadius() && configManager.getAffectedEntities().contains(entity.getType()) && !playerManager.isPlayerWithDragonEgg(entity)) {
+                            if (entity != player &&
+                                    entity.getLocation().distance(center) <= configManager.getDebuffRadius() &&
+                                    configManager.getAffectedEntities().contains(entity.getType()) &&
+                                    !playerManager.isPlayerWithDragonEgg(entity)) {
+                                if (entity instanceof Player) {
+                                    Player targetPlayer = (Player) entity;
+                                    if (targetPlayer.isOp() ||
+                                            targetPlayer.getGameMode() == GameMode.CREATIVE ||
+                                            targetPlayer.getGameMode() == GameMode.SPECTATOR ||
+                                            targetPlayer.hasPermission("sde.bypass")) {
+                                        continue;
+                                    }
+                                }
                                 for (String effect : configManager.getDebuffEffects()) {
                                     applyEffect(entity, effect, 1.0);
                                 }

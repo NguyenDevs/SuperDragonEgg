@@ -15,6 +15,7 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
+import org.bukkit.GameMode;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -58,7 +59,7 @@ public class DragonShieldAbility implements Listener {
             }
 
             if (!playerManager.isPlayerWithDragonEgg(player)) {
-               // plugin.getLogger().warning("Player " + player.getName() + " attempted to activate ability without dragon egg!");
+                // plugin.getLogger().warning("Player " + player.getName() + " attempted to activate ability without dragon egg!");
                 return;
             }
 
@@ -121,7 +122,6 @@ public class DragonShieldAbility implements Listener {
             double spiralOffset = 2 * Math.PI * spiral / spirals;
 
             for (int point = 0; point < pointsPerSpiral; point++) {
-
                 double progress = (double) point / (pointsPerSpiral - 1);
                 double y = -radius + height * progress;
 
@@ -129,10 +129,8 @@ public class DragonShieldAbility implements Listener {
                 double sphereRadius;
 
                 if (normalizedHeight <= 0.5) {
-
                     sphereRadius = radius * Math.sqrt(1 - Math.pow(2 * normalizedHeight - 1, 2));
                 } else {
-
                     sphereRadius = radius * Math.sqrt(1 - Math.pow(2 * normalizedHeight - 1, 2));
                 }
 
@@ -165,6 +163,16 @@ public class DragonShieldAbility implements Listener {
             if (entity instanceof Player && playerManager.isPlayerWithDragonEgg((Player) entity)) {
                 continue;
             }
+            // Kiểm tra nếu entity là người chơi và có các điều kiện đặc biệt
+            if (entity instanceof Player) {
+                Player targetPlayer = (Player) entity;
+                if (targetPlayer.isOp() ||
+                        targetPlayer.getGameMode() == GameMode.CREATIVE ||
+                        targetPlayer.getGameMode() == GameMode.SPECTATOR ||
+                        targetPlayer.hasPermission("sde.bypass")) {
+                    continue; // Bỏ qua người chơi đặc biệt
+                }
+            }
 
             double distance = entity.getLocation().distance(center);
             if (distance < minRadius || distance > maxRadius) continue;
@@ -174,7 +182,7 @@ public class DragonShieldAbility implements Listener {
 
             Vector direction = entity.getLocation().toVector().subtract(center.toVector());
             if (direction.lengthSquared() == 0) {
-                Bukkit.getConsoleSender().sendMessage("§d[§5SuperDragonEgg§d] §cZero vector detected in apply Knockback at entity: " + entity.getLocation());
+                Bukkit.getConsoleSender().sendMessage("§d[§5SuperDragonEgg§d] §cZero vector detected in applyKnockback at entity: " + entity.getLocation());
                 continue;
             }
             double yDifference = entity.getLocation().getY() - center.getY();
