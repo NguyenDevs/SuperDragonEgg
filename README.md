@@ -15,8 +15,9 @@ With features like allied mob buffs, resonance effects for players holding eggs,
 - **Lightweight & Optimized**: Designed for minimal server impact, with per-player effect tasks and efficient entity checks.
 
 ![image](https://github.com/user-attachments/assets/31b13b0c-d8e2-4634-813e-280ae6d081d7)
+## Commands
 - `/sde reload`reloads the configuration file
-
+## Permissions
 - `sde.reload` Allows reloading the SuperDragonEgg config
 - `sde.bypass` Allows to bypass debuff, knockback and ability effect
 - `sde.use` Allows using the SuperDragonEgg features
